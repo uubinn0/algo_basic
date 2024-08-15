@@ -1,3 +1,7 @@
+'''
+https://school.programmers.co.kr/learn/courses/30/lessons/1844
+'''
+
 import sys
 import copy
 from collections import deque
@@ -12,9 +16,11 @@ dyx = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 
 
 def search(y, x, cnt,visited):
-    # 도착 지점 주변이 막힌 경우
-    if visited[N-1][M-2] == 0 and visited[N-2][M-1] == 0:
-        return -1
+
+    # # 도착 지점 주변이 막힌 경우 - 가지치기하고 싶은데 이거 넣으면 사이트에서 오류남 엌ㅋㅋ
+    # # 생각하기 귀찮으니까 일단 뺌
+    # if visited[N-1][M-2] == 0 and visited[N-2][M-1] == 0:
+    #     return -1
 
     deq = deque()
     deq.append((y,x, 1))
@@ -50,8 +56,6 @@ def search(y, x, cnt,visited):
 
     # pprint(visited)
     # print(cnt)
-
-            
 
 
 

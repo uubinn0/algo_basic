@@ -1,3 +1,7 @@
+'''
+https://school.programmers.co.kr/learn/courses/30/lessons/43165
+'''
+
 import sys
 sys.stdin = open('타겟넘버_input.txt', 'r')
 
@@ -20,7 +24,6 @@ def search_target(idx, total_sum):
 
     # 숫자를 음수로 선택한 경우
     search_target(idx+1, total_sum-numbers[idx])
-
 
 
 for test_case in range(1, 1+T):
