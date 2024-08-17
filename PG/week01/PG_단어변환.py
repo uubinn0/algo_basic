@@ -31,7 +31,7 @@ def search_word(current_word):
             if check_change(current_word, word):
                 if not check[words.index(word)]:    # 방문하지 않은 노드일 때만
                     deq.append((word, cnt+1))
-                    check[words.index(word)] = True
+                    check[words.index(word)] = True # 방문처리 똑바로 하기... ==로 했음.... ㄷㄷ;;
     
     return 0
 
@@ -39,18 +39,17 @@ def search_word(current_word):
 # 한 자리만 다른 단어인지 체크
 def check_change(current_word, word):
     word_set = set(current_word+word)
-    if len(word_set) == 4:
+    if len(word_set) == len(word)+1:
         return True
     else:
         return False
-
 
 
 for _ in range(1, T+1):
     N = int(input())    #words 길이
     begin, target = map(str,input().split())
     words = list(map(str,input().split()))
-    check = [False] * N
+    result = float('inf')
 
     # target 단어가 단어 리스트에 있는 경우만 서치를 함
     if target in words:
@@ -58,9 +57,11 @@ for _ in range(1, T+1):
             # 다음 단어가 현재 단어에서 변형이 가능한 단어인지 확인
             # 한 자리만 차이나는지 확인
             if check_change(begin, word):
-                result = search_word(current_word = word)
+                check = [False] * N # bfs를 돌 때마다 초기화를 해 줘야함
+                current_result = search_word(current_word = word)
+                result = min(result, current_result)    # 시작점이 바뀐 bfs마다 최소값인지 비교하며 갱신
     else:
         result = 0
-
+ 
 
     print(result)
