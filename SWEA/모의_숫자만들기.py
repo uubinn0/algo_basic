@@ -38,6 +38,5 @@ for tc in range(1, 1+T):
 
     make_num(idx=0, op_list=op_list, current_sum=num_list[0])
 
-    
     # print(f'{max_total, min_total}')
     print(f'#{tc} {max_total - min_total}')
