@@ -25,7 +25,9 @@ def dfs(num_list, c_cnt):
             make_num = ''.join(num_list)
 
             # 이미 만든 적 있는 숫자인 경우
-            if (make_num, c_cnt) in visited: return
+            if (make_num, c_cnt) in visited:
+                num_list[i], num_list[j] = num_list[j], num_list[i]
+                continue
 
             # 방문한 적 없는 경우
             visited.add((make_num,c_cnt))
