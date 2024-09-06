@@ -27,10 +27,16 @@ def find_processer(board):
     return arr
 
 
-def connect(process_pos):
+def connect(process_pos, idx):
+    global result
     connect_cnt = 0
     line_len = 0
-    result = []
+
+
+    # 모든 프로세스를 모두 선택 했다면
+    if idx >= N:
+        result.append((connect_cnt, line_len))
+
 
     for position in process_pos:
         # 현재 좌표
@@ -57,7 +63,8 @@ T = int(input())
 for tc in range(1, T+1):
     N = int(input())
     board = [list(map(int,input().split())) for _ in range(N)]
+    result = []
 
     processer_pos = find_processer(board)
 
-    connect(processer_pos)
+    connect(processer_pos, 0)
