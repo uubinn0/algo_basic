@@ -57,7 +57,7 @@ def search(start_list):
         cnt = semester
 
         for adj_sub in adj_dict[next_sub]:
-            next_sub_list.append((adj_sub, semester + 1))
+            next_sub_deq.append((adj_sub, semester + 1))
 
     return
 
