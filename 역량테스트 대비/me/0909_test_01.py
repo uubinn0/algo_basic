@@ -9,7 +9,7 @@ import sys
 from collections import deque
 from collections import defaultdict
 
-# sys.stdin = open('0909_01_input.txt', 'r')
+sys.stdin = open('0909_01_input.txt', 'r')
 
 
 # 해당 과목의 선수 과목을 모두 이수한 상태인지 확인하는 함수
@@ -46,10 +46,17 @@ def search(start_list):
 
     while next_sub_deq:
         next_sub, semester = next_sub_deq.popleft()
+        # print(1)
+
+        # 현재 학기가 최대로 나올 수 있는 학기보다 많아진 경우 탈출해야함
+        if semester > N:
+            cnt = -1
+            return
 
         # 이수할 수 없는 상황인 경우 = 아직 선수과목이 남아있는 상태
         if not check(next_sub):
             next_sub_deq.append((next_sub, semester+1))  # 다음 학기에 듣는 것으로 처리
+            continue
 
         # 선수과목을 모두 방문한 경우 해당 과목을 이수한 것(방문)으로 처리
         # 해당 과목을 이수한 이후 들을 수 있는 과목들을 다음 학기에 듣는 것으로 처리해서 큐에 넣어줌
@@ -60,7 +67,6 @@ def search(start_list):
             next_sub_deq.append((adj_sub, semester + 1))
 
     return
-
 
 
 T = int(input())
@@ -77,13 +83,13 @@ for tc in range(1, T+1):
     for i in range(0, N):
         for j in arr[i][1:]:
             adj_dict[j].append(i+1)
-    print(adj_dict)
+    # print(adj_dict)
 
     # 해당 과목 : 선수과목 리스트
     for i in range(0, N):
         for j in arr[i][1:]:
             pre_subject[i+1].append(j)
-    print(pre_subject)
+    # print(pre_subject)
 
     start_list = []
     for key, value in pre_subject.items():
@@ -94,4 +100,4 @@ for tc in range(1, T+1):
     # print(start_v)
 
     search(start_list)
-    print(cnt)
+    print(f'#{tc} {cnt}')
