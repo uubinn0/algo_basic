@@ -7,7 +7,15 @@ N = int(input())
 
 arr = list(map(int, input().split()))
 remove_node = int(input())
+
+root_node = arr.index(-1)
+# 만약 제거하는 노드가 부모 노드라면 바로 0 반환
+if remove_node == root_node:
+    print(0)
+    quit()
+
 tree = defaultdict(list)
+leaf_cnt = 0
 
 # 딕셔너리로 변환
 for idx, parent in enumerate(arr):
@@ -19,45 +27,30 @@ for idx, parent in enumerate(arr):
 
 # print(tree)
 
-# 지울 노드 저장
-remove_node_list = []
+
+# 1. 트리 완전 탐색하기 - 깊이 우선
+def search(t, node_idx):
+    # print(node_idx)
+    global leaf_cnt
+
+    # 자식이 없는 노드의 경우 딕셔너리에 키가 생성되지 않음
+    # 자식이 없다면 value가 비어있음
+    # 해당 노드에 자식이 없다면 리프노드 수 +1
+    if node_idx not in t.keys() or not t[node_idx]:
+        leaf_cnt += 1
+        return
+
+    # 여기 도달한 것은 자식이 있다는 의미
+    # 해당 노드의 자식노드로 들어감
+    for child_node in t[node_idx]:
+        search(t, child_node)
 
 
-# 지울 노드 번호 수집
-# 지울 노드 + 자식 노드
-def remove_child(remove_num):
-    # print(f'이번에 지울 노드는 {remove_num}')
-    # 지울 노드 리스트에 자신을 추가
-    remove_node_list.append(remove_num)
+# 2. 제거할 노드 연결을 끊어주기
+# 부모 리스트에서 해당 노드 제거
+parent_node = arr[remove_node]
+tree[parent_node].remove(remove_node)
 
-    # 지울 노드에 자식이 있다면
-    # print('1. ', tree[remove_num])
-    if tree[remove_num]:
-        for child_node in tree[remove_num]:
-            # 자식 노드에 대해서 반복
-            remove_child(child_node)
-
-    return
-
-
-remove_child(remove_node)
-# print(remove_node_list)
-
-for num in remove_node_list:
-    # 지울 노드가 부모인 경우 삭제해준다
-    if num in tree.keys():
-        del tree[num]
-
-print(tree)
-
-# 부모 수
-parent_cnt = len(tree.keys())
-
-if parent_cnt != 1:
-    # 기존 노드 수에서 지운 노드 수를 제외하고
-    # 남은 노드 수에서 부모가 아닌 노드 수 == 리프 노드
-    print((N-len(remove_node_list))-parent_cnt)
-else:
-    print(1)
-
-# 타다닥 타다닥 타다닥 타다닥 타다닥
+# 시작은 루트 노드부터
+search(tree, root_node)
+print(leaf_cnt)
