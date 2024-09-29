@@ -9,11 +9,14 @@ A->B->C->D->E의 관계가 있는지 확인
 '''
 from collections import defaultdict
 
-from Tools.scripts.findlinksto import visit
-
 N, M = map(int, input().split())
 
+if N < 4:
+    print(0)
+    quit()
+
 relations = defaultdict(list)
+result = 0
 
 for i in range(M):
     a, b = map(int, input().split())
@@ -22,27 +25,35 @@ for i in range(M):
 
 # print(relations.items())
 
+
 def search(current_node, visited, depth):
-    # depth가 4가 되면?
-    if depth == 4:
-        return 1
+    # 현재 노드가 방문한 적 있다면 함수 종료
+    if current_node in visited: return depth
 
-    # 이미 방문한 노드라면
-    if current_node in visited: return
+    # 관계가 4번이상 이어지면
+    if depth >= 4:  return depth
 
-    #  방문 체크
+    # 방문 처리
     visited.add(current_node)
 
-    # 다음 방문할 노드 선정하기
-    # 현재 노드의 인접한 노드로 이동
-    for next_node in relations[current_node]:
-        search(next_node, visited, depth+1)
+    # 현재 노드의 인접 노드로
+    for adj_node in relations[current_node]:
+        res = search(adj_node, visited, depth+1)
+        if res >= 4:
+            return res
+
+    visited.remove(current_node)
+
+    return depth
 
 
-
-
-
-
+# 모든 노드에 대해서 해당 관계가 있는지 확인
 for search_node in relations.keys():
-    # print(search_node)
-    search(search_node, set(), 0)
+    result = search(search_node, set(), 0)
+
+    if result >= 4:
+        print(1)
+        quit()
+
+if result < 4:
+    print(0)
