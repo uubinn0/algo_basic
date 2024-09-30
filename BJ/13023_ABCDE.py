@@ -11,11 +11,13 @@ from collections import defaultdict
 
 N, M = map(int, input().split())
 
+# 노드 수가 4개 이하라면 해당 관계가 생길 수 없음
 if N < 4:
     print(0)
     quit()
 
 relations = defaultdict(list)
+visited = set()
 result = 0
 
 for i in range(M):
@@ -23,34 +25,33 @@ for i in range(M):
     relations[a].append(b)
     relations[b].append(a)
 
-# print(relations.items())
+# print(relations)
 
 
 def search(current_node, visited, depth):
-    # 현재 노드가 방문한 적 있다면 함수 종료
-    if current_node in visited: return depth
-
-    # 관계가 4번이상 이어지면
+    # 간선을 4번 이상 이을 수 있으면
     if depth >= 4:  return depth
 
-    # 방문 처리
-    visited.add(current_node)
 
     # 현재 노드의 인접 노드로
     for adj_node in relations[current_node]:
+        if adj_node in visited: continue
+
+        # visited check
+        visited.add(adj_node)
         res = search(adj_node, visited, depth+1)
+        visited.remove(adj_node)
         if res >= 4:
             return res
-
-    visited.remove(current_node)
 
     return depth
 
 
 # 모든 노드에 대해서 해당 관계가 있는지 확인
 for search_node in relations.keys():
-    result = search(search_node, set(), 0)
-
+    visited.add(search_node)
+    result = search(search_node, visited, 0)
+    visited.remove(search_node)
     if result >= 4:
         print(1)
         quit()
